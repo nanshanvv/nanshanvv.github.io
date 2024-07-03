@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/77189526?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="## 二分搜索法
+
+### [[题目：Leetcode.704](https://leetcode.cn/problems/binary-search/submissions/543800734/)](https://leetcode.cn/problems/binary-search/submissions/543800734/)
+
+### 视频讲解：[[代码随想录](https://www.bilibili.com/video/BV1fA4y1o715/?vd_source=a693917376813c5b1608ec0a4132e636)](https://www.bilibili.com/video/BV1fA4y1o715/?vd_source=a693917376813c5b1608ec0a4132e636)
+
+### 重点：
+
+1. 对于`while(left < right)` 还是 `while(left <= right)`的判断
+2. 对于是`right = middle`还是`right = middle - 1`的判断
+
+
+
+**关注点：主要是对于区间的定义，是[left,right] , [left,right)**
+
+#### 1.闭区间写法
+
+```c++
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1; // 定义target在左闭右闭的区间里，[left, right]
+        while (left <= right) { // 当left==right，区间[left, right]依然有效，所以用 <=
+            int middle = left + ((right - left) / 2);// 防止溢出 等同于(left + right)/2
+            if (nums[middle] > target) {
+                right = middle - 1; // target 在左区间，所以[left, middle - 1]
+            } else if (nums[middle] < target) {
+                left = middle + 1; // target 在右区间，所以[middle + 1, right]
+            } else { // nums[middle] == target
+                return middle; // 数组中找到目标值，直接返回下标
+            }
+        }
+        // 未找到目标值
+        return -1;
+    }
+};
+```
+
+**笔记：**
+
+​	**1.因为是闭区间，所以while(left <= right)**
+
+​	如果该数组为[8]，因为闭区间 left = right 存在，所以用 while(left <= right)
+
+​	**2.因为是if(num[middle] > target), 所以 right = middle -1 （middle+1同理）**
+
+​	因为 if(num[middle] > target) 已经限制 num[middle]！=target ，所以直接 right = middle -1
+
+
+
+#### 2.左闭右开写法
+
+```c++
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size(); // 定义target在左闭右开的区间里，即：[left, right)
+        while (left < right) { // 因为left == right的时候，在[left, right)是无效的空间，所以使用 <
+            int middle = left + ((right - left) >> 1);
+            if (nums[middle] > target) {
+                right = middle; // target 在左区间，在[left, middle)中
+            } else if (nums[middle] < target) {
+                left = middle + 1; // target 在右区间，在[middle + 1, right)中
+            } else { // nums[middle] == target
+                return middle; // 数组中找到目标值，直接返回下标
+            }
+        }
+        // 未找到目标值
+        return -1;
+    }
+};
+```
+
+**笔记：**
+
+​	**1.因为是左闭右开区间，所以while(left < right)**
+
+​	如果有数组为[8），因为闭区间 left = right 不存在，所以用 while(left < right) 
+
+​	**2.因为是if(num[middle] > target)且左闭右开, 所以 right = middle **
+
+​	因为是左闭右开且 target 在左区间，所以 right 直接取 middle 后区间为 [left,middle) ,下一个查询区间不会去比较 nums[middle]，所以 right = middle; 如果 right = middle -1 的话区间就成 [left , middle - 1), 假如 middle-1 就是 target 就比不到了
+
+​	**注意：当target在右区间，left = middle + 1** 
+
+
+
+
+
+
+
+## 移除元素
+
+### [[题目：Leetcode.27](https://leetcode.cn/problems/remove-element/)](https://leetcode.cn/problems/remove-element/)
+
+### 视频讲解：[[代码随想录](https://www.bilibili.com/video/BV12A4y1Z7LP/?spm_id_from=333.788&vd_source=a693917376813c5b1608ec0a4132e636)](https://www.bilibili.com/video/BV12A4y1Z7LP/?spm_id_from=333.788&vd_source=a693917376813c5b1608ec0a4132e636)
+
+### **重点：双指针法**
+
+
+
+### 我使用的暴力解法
+
+```c++
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int n = 0;
+        int m[100] = {};
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] != val) {
+                m[n] = nums[i];
+                n++;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            nums[i] = m[i];
+        }
+        return n;
+    }
+};
+```
+
+
+
+### 双指针法（快慢指针法）
+![27 移除元素-双指针法](https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/ee7d5620-b500-4504-b036-89f5aed99512)
+
+- 快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
+- 慢指针：指向更新 新数组下标的位置
+
+![Uploading 27.移除元素-双指针法.gif…]()
+
+```c++
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int slowIndex = 0;
+        for (int fastIndex = 0; fastIndex < nums.size(); fastIndex++) {
+            if (val != nums[fastIndex]) {
+                nums[slowIndex++] = nums[fastIndex];
+            }
+        }
+        return slowIndex;
+    }
+};
+```。">
+<meta property="og:title" content="算法训练DAY1 | LC704. 二分查找，LC27. 移除元素">
+<meta property="og:description" content="## 二分搜索法
+
+### [[题目：Leetcode.704](https://leetcode.cn/problems/binary-search/submissions/543800734/)](https://leetcode.cn/problems/binary-search/submissions/543800734/)
+
+### 视频讲解：[[代码随想录](https://www.bilibili.com/video/BV1fA4y1o715/?vd_source=a693917376813c5b1608ec0a4132e636)](https://www.bilibili.com/video/BV1fA4y1o715/?vd_source=a693917376813c5b1608ec0a4132e636)
+
+### 重点：
+
+1. 对于`while(left < right)` 还是 `while(left <= right)`的判断
+2. 对于是`right = middle`还是`right = middle - 1`的判断
+
+
+
+**关注点：主要是对于区间的定义，是[left,right] , [left,right)**
+
+#### 1.闭区间写法
+
+```c++
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1; // 定义target在左闭右闭的区间里，[left, right]
+        while (left <= right) { // 当left==right，区间[left, right]依然有效，所以用 <=
+            int middle = left + ((right - left) / 2);// 防止溢出 等同于(left + right)/2
+            if (nums[middle] > target) {
+                right = middle - 1; // target 在左区间，所以[left, middle - 1]
+            } else if (nums[middle] < target) {
+                left = middle + 1; // target 在右区间，所以[middle + 1, right]
+            } else { // nums[middle] == target
+                return middle; // 数组中找到目标值，直接返回下标
+            }
+        }
+        // 未找到目标值
+        return -1;
+    }
+};
+```
+
+**笔记：**
+
+​	**1.因为是闭区间，所以while(left <= right)**
+
+​	如果该数组为[8]，因为闭区间 left = right 存在，所以用 while(left <= right)
+
+​	**2.因为是if(num[middle] > target), 所以 right = middle -1 （middle+1同理）**
+
+​	因为 if(num[middle] > target) 已经限制 num[middle]！=target ，所以直接 right = middle -1
+
+
+
+#### 2.左闭右开写法
+
+```c++
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size(); // 定义target在左闭右开的区间里，即：[left, right)
+        while (left < right) { // 因为left == right的时候，在[left, right)是无效的空间，所以使用 <
+            int middle = left + ((right - left) >> 1);
+            if (nums[middle] > target) {
+                right = middle; // target 在左区间，在[left, middle)中
+            } else if (nums[middle] < target) {
+                left = middle + 1; // target 在右区间，在[middle + 1, right)中
+            } else { // nums[middle] == target
+                return middle; // 数组中找到目标值，直接返回下标
+            }
+        }
+        // 未找到目标值
+        return -1;
+    }
+};
+```
+
+**笔记：**
+
+​	**1.因为是左闭右开区间，所以while(left < right)**
+
+​	如果有数组为[8），因为闭区间 left = right 不存在，所以用 while(left < right) 
+
+​	**2.因为是if(num[middle] > target)且左闭右开, 所以 right = middle **
+
+​	因为是左闭右开且 target 在左区间，所以 right 直接取 middle 后区间为 [left,middle) ,下一个查询区间不会去比较 nums[middle]，所以 right = middle; 如果 right = middle -1 的话区间就成 [left , middle - 1), 假如 middle-1 就是 target 就比不到了
+
+​	**注意：当target在右区间，left = middle + 1** 
+
+
+
+
+
+
+
+## 移除元素
+
+### [[题目：Leetcode.27](https://leetcode.cn/problems/remove-element/)](https://leetcode.cn/problems/remove-element/)
+
+### 视频讲解：[[代码随想录](https://www.bilibili.com/video/BV12A4y1Z7LP/?spm_id_from=333.788&vd_source=a693917376813c5b1608ec0a4132e636)](https://www.bilibili.com/video/BV12A4y1Z7LP/?spm_id_from=333.788&vd_source=a693917376813c5b1608ec0a4132e636)
+
+### **重点：双指针法**
+
+
+
+### 我使用的暴力解法
+
+```c++
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int n = 0;
+        int m[100] = {};
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] != val) {
+                m[n] = nums[i];
+                n++;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            nums[i] = m[i];
+        }
+        return n;
+    }
+};
+```
+
+
+
+### 双指针法（快慢指针法）
+![27 移除元素-双指针法](https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/ee7d5620-b500-4504-b036-89f5aed99512)
+
+- 快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组
+- 慢指针：指向更新 新数组下标的位置
+
+![Uploading 27.移除元素-双指针法.gif…]()
+
+```c++
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int slowIndex = 0;
+        for (int fastIndex = 0; fastIndex < nums.size(); fastIndex++) {
+            if (val != nums[fastIndex]) {
+                nums[slowIndex++] = nums[fastIndex];
+            }
+        }
+        return slowIndex;
+    }
+};
+```。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://nanshanvv.github.io/post/suan-fa-xun-lian-DAY1%20-%20LC704.%20-er-fen-cha-zhao-%EF%BC%8CLC27.%20-yi-chu-yuan-su.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/77189526?v=4">
+<title>算法训练DAY1 | LC704. 二分查找，LC27. 移除元素</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">算法训练DAY1 | LC704. 二分查找，LC27. 移除元素</h1>
+<div class="title-right">
+    <a href="https://nanshanvv.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/nanshanvv/nanshanvv.github.io/issues/2" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h2>二分搜索法</h2>
+<h3>[<a href="https://leetcode.cn/problems/binary-search/submissions/543800734/" rel="nofollow">题目：Leetcode.704</a>](<a href="https://leetcode.cn/problems/binary-search/submissions/543800734/" rel="nofollow">https://leetcode.cn/problems/binary-search/submissions/543800734/</a>)</h3>
+<h3>视频讲解：[<a href="https://www.bilibili.com/video/BV1fA4y1o715/?vd_source=a693917376813c5b1608ec0a4132e636" rel="nofollow">代码随想录</a>](<a href="https://www.bilibili.com/video/BV1fA4y1o715/?vd_source=a693917376813c5b1608ec0a4132e636" rel="nofollow">https://www.bilibili.com/video/BV1fA4y1o715/?vd_source=a693917376813c5b1608ec0a4132e636</a>)</h3>
+<h3>重点：</h3>
+<ol>
+<li>对于<code class="notranslate">while(left &lt; right)</code> 还是 <code class="notranslate">while(left &lt;= right)</code>的判断</li>
+<li>对于是<code class="notranslate">right = middle</code>还是<code class="notranslate">right = middle - 1</code>的判断</li>
+</ol>
+<p><strong>关注点：主要是对于区间的定义，是[left,right] , [left,right)</strong></p>
+<h4>1.闭区间写法</h4>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
+<span class="pl-k">public:</span>
+    <span class="pl-k">int</span> <span class="pl-en">search</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; nums, <span class="pl-k">int</span> target) {
+        <span class="pl-k">int</span> left = <span class="pl-c1">0</span>;
+        <span class="pl-k">int</span> right = nums.<span class="pl-c1">size</span>() - <span class="pl-c1">1</span>; <span class="pl-c"><span class="pl-c">//</span> 定义target在左闭右闭的区间里，[left, right]</span>
+        <span class="pl-k">while</span> (left &lt;= right) { <span class="pl-c"><span class="pl-c">//</span> 当left==right，区间[left, right]依然有效，所以用 &lt;=</span>
+            <span class="pl-k">int</span> middle = left + ((right - left) / <span class="pl-c1">2</span>);<span class="pl-c"><span class="pl-c">//</span> 防止溢出 等同于(left + right)/2</span>
+            <span class="pl-k">if</span> (nums[middle] &gt; target) {
+                right = middle - <span class="pl-c1">1</span>; <span class="pl-c"><span class="pl-c">//</span> target 在左区间，所以[left, middle - 1]</span>
+            } <span class="pl-k">else</span> <span class="pl-k">if</span> (nums[middle] &lt; target) {
+                left = middle + <span class="pl-c1">1</span>; <span class="pl-c"><span class="pl-c">//</span> target 在右区间，所以[middle + 1, right]</span>
+            } <span class="pl-k">else</span> { <span class="pl-c"><span class="pl-c">//</span> nums[middle] == target</span>
+                <span class="pl-k">return</span> middle; <span class="pl-c"><span class="pl-c">//</span> 数组中找到目标值，直接返回下标</span>
+            }
+        }
+        <span class="pl-c"><span class="pl-c">//</span> 未找到目标值</span>
+        <span class="pl-k">return</span> -<span class="pl-c1">1</span>;
+    }
+};</pre></div>
+<p><strong>笔记：</strong></p>
+<p>​	<strong>1.因为是闭区间，所以while(left &lt;= right)</strong></p>
+<p>​	如果该数组为[8]，因为闭区间 left = right 存在，所以用 while(left &lt;= right)</p>
+<p>​	<strong>2.因为是if(num[middle] &gt; target), 所以 right = middle -1 （middle+1同理）</strong></p>
+<p>​	因为 if(num[middle] &gt; target) 已经限制 num[middle]！=target ，所以直接 right = middle -1</p>
+<h4>2.左闭右开写法</h4>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
+<span class="pl-k">public:</span>
+    <span class="pl-k">int</span> <span class="pl-en">search</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; nums, <span class="pl-k">int</span> target) {
+        <span class="pl-k">int</span> left = <span class="pl-c1">0</span>;
+        <span class="pl-k">int</span> right = nums.<span class="pl-c1">size</span>(); <span class="pl-c"><span class="pl-c">//</span> 定义target在左闭右开的区间里，即：[left, right)</span>
+        <span class="pl-k">while</span> (left &lt; right) { <span class="pl-c"><span class="pl-c">//</span> 因为left == right的时候，在[left, right)是无效的空间，所以使用 &lt;</span>
+            <span class="pl-k">int</span> middle = left + ((right - left) &gt;&gt; <span class="pl-c1">1</span>);
+            <span class="pl-k">if</span> (nums[middle] &gt; target) {
+                right = middle; <span class="pl-c"><span class="pl-c">//</span> target 在左区间，在[left, middle)中</span>
+            } <span class="pl-k">else</span> <span class="pl-k">if</span> (nums[middle] &lt; target) {
+                left = middle + <span class="pl-c1">1</span>; <span class="pl-c"><span class="pl-c">//</span> target 在右区间，在[middle + 1, right)中</span>
+            } <span class="pl-k">else</span> { <span class="pl-c"><span class="pl-c">//</span> nums[middle] == target</span>
+                <span class="pl-k">return</span> middle; <span class="pl-c"><span class="pl-c">//</span> 数组中找到目标值，直接返回下标</span>
+            }
+        }
+        <span class="pl-c"><span class="pl-c">//</span> 未找到目标值</span>
+        <span class="pl-k">return</span> -<span class="pl-c1">1</span>;
+    }
+};</pre></div>
+<p><strong>笔记：</strong></p>
+<p>​	<strong>1.因为是左闭右开区间，所以while(left &lt; right)</strong></p>
+<p>​	如果有数组为[8），因为闭区间 left = right 不存在，所以用 while(left &lt; right)</p>
+<p>​	**2.因为是if(num[middle] &gt; target)且左闭右开, 所以 right = middle **</p>
+<p>​	因为是左闭右开且 target 在左区间，所以 right 直接取 middle 后区间为 [left,middle) ,下一个查询区间不会去比较 nums[middle]，所以 right = middle; 如果 right = middle -1 的话区间就成 [left , middle - 1), 假如 middle-1 就是 target 就比不到了</p>
+<p>​	<strong>注意：当target在右区间，left = middle + 1</strong></p>
+<h2>移除元素</h2>
+<h3>[<a href="https://leetcode.cn/problems/remove-element/" rel="nofollow">题目：Leetcode.27</a>](<a href="https://leetcode.cn/problems/remove-element/" rel="nofollow">https://leetcode.cn/problems/remove-element/</a>)</h3>
+<h3>视频讲解：[<a href="https://www.bilibili.com/video/BV12A4y1Z7LP/?spm_id_from=333.788&amp;vd_source=a693917376813c5b1608ec0a4132e636" rel="nofollow">代码随想录</a>](<a href="https://www.bilibili.com/video/BV12A4y1Z7LP/?spm_id_from=333.788&amp;vd_source=a693917376813c5b1608ec0a4132e636" rel="nofollow">https://www.bilibili.com/video/BV12A4y1Z7LP/?spm_id_from=333.788&amp;vd_source=a693917376813c5b1608ec0a4132e636</a>)</h3>
+<h3><strong>重点：双指针法</strong></h3>
+<h3>我使用的暴力解法</h3>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
+<span class="pl-k">public:</span>
+    <span class="pl-k">int</span> <span class="pl-en">removeElement</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; nums, <span class="pl-k">int</span> val) {
+        <span class="pl-k">int</span> n = <span class="pl-c1">0</span>;
+        <span class="pl-k">int</span> m[<span class="pl-c1">100</span>] = {};
+        <span class="pl-k">for</span> (<span class="pl-k">int</span> i = <span class="pl-c1">0</span>; i &lt; nums.<span class="pl-c1">size</span>(); i++) {
+            <span class="pl-k">if</span> (nums[i] != val) {
+                m[n] = nums[i];
+                n++;
+            }
+        }
+
+        <span class="pl-k">for</span> (<span class="pl-k">int</span> i = <span class="pl-c1">0</span>; i &lt; n; i++) {
+            nums[i] = m[i];
+        }
+        <span class="pl-k">return</span> n;
+    }
+};</pre></div>
+<h3>双指针法（快慢指针法）</h3>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/ee7d5620-b500-4504-b036-89f5aed99512"><img src="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/ee7d5620-b500-4504-b036-89f5aed99512" alt="27 移除元素-双指针法" style="max-width: 100%;"></a></p>
+<ul>
+<li>快指针：寻找新数组的元素 ，新数组就是不含有目标元素的数组</li>
+<li>慢指针：指向更新 新数组下标的位置</li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer" href=""><img src="" alt="Uploading 27.移除元素-双指针法.gif…" style="max-width: 100%;"></a></p>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-c"><span class="pl-c">//</span> 时间复杂度：O(n)</span>
+<span class="pl-c"><span class="pl-c">//</span> 空间复杂度：O(1)</span>
+<span class="pl-k">class</span> <span class="pl-en">Solution</span> {
+<span class="pl-k">public:</span>
+    <span class="pl-k">int</span> <span class="pl-en">removeElement</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; nums, <span class="pl-k">int</span> val) {
+        <span class="pl-k">int</span> slowIndex = <span class="pl-c1">0</span>;
+        <span class="pl-k">for</span> (<span class="pl-k">int</span> fastIndex = <span class="pl-c1">0</span>; fastIndex &lt; nums.<span class="pl-c1">size</span>(); fastIndex++) {
+            <span class="pl-k">if</span> (val != nums[fastIndex]) {
+                nums[slowIndex++] = nums[fastIndex];
+            }
+        }
+        <span class="pl-k">return</span> slowIndex;
+    }
+};</pre></div></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://nanshanvv.github.io"> 南山的博客 </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if(""!=""){
+    var now=new Date();
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","nanshanvv/nanshanvv.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+</html>

@@ -1,5 +1,25 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>南山的博客</title><link>https://nanshanvv.github.io</link><description>LC算法训练 | 日常Blog</description><copyright>南山的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/77189526?v=4</url><title>avatar</title><link>https://nanshanvv.github.io</link></image><lastBuildDate>Wed, 03 Jul 2024 15:35:59 +0000</lastBuildDate><managingEditor>南山的博客</managingEditor><ttl>60</ttl><webMaster>南山的博客</webMaster><item><title>算法训练DAY1 | LC704. 二分查找，LC27. 移除元素</title><link>https://nanshanvv.github.io/post/suan-fa-xun-lian-DAY1%20-%20LC704.%20-er-fen-cha-zhao-%EF%BC%8CLC27.%20-yi-chu-yuan-su.html</link><description>## 二分搜索法&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>南山的博客</title><link>https://nanshanvv.github.io</link><description>LC算法训练 | 日常Blog</description><copyright>南山的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/77189526?v=4</url><title>avatar</title><link>https://nanshanvv.github.io</link></image><lastBuildDate>Fri, 05 Jul 2024 14:41:56 +0000</lastBuildDate><managingEditor>南山的博客</managingEditor><ttl>60</ttl><webMaster>南山的博客</webMaster><item><title>算法训练DAY2 | LC977. 有序数组的平方(双指针法)，LC209. 长度最小的子数组(滑动窗口法), LC59. 螺旋矩阵II</title><link>https://nanshanvv.github.io/post/suan-fa-xun-lian-DAY2%20-%20LC977.%20-you-xu-shu-zu-de-ping-fang-%28-shuang-zhi-zhen-fa-%29%EF%BC%8CLC209.%20-chang-du-zui-xiao-de-zi-shu-zu-%28-hua-dong-chuang-kou-fa-%29%2C%20LC59.%20-luo-xuan-ju-zhen-II.html</link><description># 有序数组的平方(双指针法)&#13;
+&#13;
+### [[题目：Leetcode.977](https://leetcode.cn/problems/squares-of-a-sorted-array/description/)](https://leetcode.cn/problems/squares-of-a-sorted-array/description/)&#13;
+&#13;
+### 视频讲解：[[代码随想录](https://www.bilibili.com/video/BV1QB4y1D7ep/)](https://www.bilibili.com/video/BV1QB4y1D7ep/)&#13;
+&#13;
+**重点：理解什么时候该用双指针法**&#13;
+&#13;
+&#13;
+&#13;
+## [[复习vector](https://www.runoob.com/w3cnote/cpp-vector-container-analysis.html)](https://www.runoob.com/w3cnote/cpp-vector-container-analysis.html)&#13;
+&#13;
+- vector():创建一个空vector&#13;
+- vector(int nSize):创建一个vector,元素个数为nSize&#13;
+- vector(int nSize,const t&amp; t):创建一个vector，元素个数为nSize,且值均为t&#13;
+- vector(const vector&amp;):复制构造函数&#13;
+- vector(begin,end):复制[begin,end)区间内另一个数组的元素到vector中&#13;
+&#13;
+## 双指针法&#13;
+&#13;
+数组其实是有序的， 只不过负数平方之后可能成为最大数了。</description><guid isPermaLink="true">https://nanshanvv.github.io/post/suan-fa-xun-lian-DAY2%20-%20LC977.%20-you-xu-shu-zu-de-ping-fang-%28-shuang-zhi-zhen-fa-%29%EF%BC%8CLC209.%20-chang-du-zui-xiao-de-zi-shu-zu-%28-hua-dong-chuang-kou-fa-%29%2C%20LC59.%20-luo-xuan-ju-zhen-II.html</guid><pubDate>Fri, 05 Jul 2024 14:41:31 +0000</pubDate></item><item><title>算法训练DAY1 | LC704. 二分查找，LC27. 移除元素</title><link>https://nanshanvv.github.io/post/suan-fa-xun-lian-DAY1%20-%20LC704.%20-er-fen-cha-zhao-%EF%BC%8CLC27.%20-yi-chu-yuan-su.html</link><description>## 二分搜索法&#13;
 &#13;
 ### [[题目：Leetcode.704](https://leetcode.cn/problems/binary-search/submissions/543800734/)](https://leetcode.cn/problems/binary-search/submissions/543800734/)&#13;
 &#13;

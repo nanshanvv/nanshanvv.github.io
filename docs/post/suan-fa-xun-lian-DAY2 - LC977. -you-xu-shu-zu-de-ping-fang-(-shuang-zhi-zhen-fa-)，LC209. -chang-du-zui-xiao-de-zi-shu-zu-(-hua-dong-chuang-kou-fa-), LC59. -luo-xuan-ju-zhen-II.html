@@ -143,22 +143,22 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>如果<code class="notranslate">A[i] * A[i] &lt; A[j] * A[j]</code> 那么<code class="notranslate">result[k--] = A[j] * A[j];</code> 。</p>
 <p>如果<code class="notranslate">A[i] * A[i] &gt;= A[j] * A[j]</code> 那么<code class="notranslate">result[k--] = A[i] * A[i];</code> 。</p>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/ec2f8391-a16e-4577-8dc8-835fff27ffd6"><img src="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/ec2f8391-a16e-4577-8dc8-835fff27ffd6" alt="977 有序数组的平方" style="max-width: 100%;"></a></p>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
-    vector&lt;<span class="pl-k">int</span>&gt; <span class="pl-en">sortedSquares</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; A) {
-        <span class="pl-k">int</span> k = A.<span class="pl-c1">size</span>() - <span class="pl-c1">1</span>;
-        vector&lt;<span class="pl-k">int</span>&gt; <span class="pl-c1">result</span>(A.<span class="pl-c1">size</span>(), <span class="pl-c1">0</span>);
-        <span class="pl-k">for</span> (<span class="pl-k">int</span> i = <span class="pl-c1">0</span>, j = A.<span class="pl-c1">size</span>() - <span class="pl-c1">1</span>; i &lt;= j;) { <span class="pl-c"><span class="pl-c">//</span> 注意这里要i &lt;= j，因为最后要处理两个元素</span>
-            <span class="pl-k">if</span> (A[i] * A[i] &lt; A[j] * A[j])  {
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
+    vector&lt;int&gt; <span class="pl-en">sortedSquares</span>(vector&lt;int&gt;&amp; A) {
+        int k = A.size() - 1;
+        vector&lt;int&gt; result(A.size(), 0);
+        for (int i = 0, j = A.size() - 1; i &lt;= j;) { // 注意这里要i &lt;= j，因为最后要处理两个元素
+            if (A[i] * A[i] &lt; A[j] * A[j])  {
                 result[k--] = A[j] * A[j];
                 j--;
             }
-            <span class="pl-k">else</span> {
+            else {
                 result[k--] = A[i] * A[i];
                 i++;
             }
         }
-        <span class="pl-k">return</span> result;
+        return result;
     }
 };</pre></div>
 <p><strong>注意的问题：</strong></p>
@@ -176,24 +176,24 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>其次，起始位置在窗口值满足题中条件后才往后移；</p>
 <p><strong>我总结出：结束位置在窗口中的值不满足时才向后移，当满足题中条件后，结束位置停止移动，起始位置向后移，并判断是不是仍然满足题意；满足：起始位置继续向后移，不满足：结束位置向后移</strong></p>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/5a843b17-7be4-48d8-ad25-4c8c8c62130e"><img src="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/5a843b17-7be4-48d8-ad25-4c8c8c62130e" alt="209 长度最小的子数组" style="max-width: 100%;"></a></p>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
-    <span class="pl-k">int</span> <span class="pl-en">minSubArrayLen</span>(<span class="pl-k">int</span> s, vector&lt;<span class="pl-k">int</span>&gt;&amp; nums) {
-        <span class="pl-k">int</span> result = INT32_MAX;
-        <span class="pl-k">int</span> sum = <span class="pl-c1">0</span>; <span class="pl-c"><span class="pl-c">//</span> 滑动窗口数值之和</span>
-        <span class="pl-k">int</span> i = <span class="pl-c1">0</span>; <span class="pl-c"><span class="pl-c">//</span> 滑动窗口起始位置</span>
-        <span class="pl-k">int</span> subLength = <span class="pl-c1">0</span>; <span class="pl-c"><span class="pl-c">//</span> 滑动窗口的长度</span>
-        <span class="pl-k">for</span> (<span class="pl-k">int</span> j = <span class="pl-c1">0</span>; j &lt; nums.<span class="pl-c1">size</span>(); j++) {
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
+    int <span class="pl-en">minSubArrayLen</span>(int s, vector&lt;int&gt;&amp; nums) {
+        int result = INT32_MAX;
+        int sum = 0; // 滑动窗口数值之和
+        int i = 0; // 滑动窗口起始位置
+        int subLength = 0; // 滑动窗口的长度
+        for (int j = 0; j &lt; nums.size(); j++) {
             sum += nums[j];
-            <span class="pl-c"><span class="pl-c">//</span> 注意这里使用while，每次更新 i（起始位置），并不断比较子序列是否符合条件</span>
-            <span class="pl-k">while</span> (sum &gt;= s) {
-                subLength = (j - i + <span class="pl-c1">1</span>); <span class="pl-c"><span class="pl-c">//</span> 取子序列的长度</span>
+            // 注意这里使用while，每次更新 i（起始位置），并不断比较子序列是否符合条件
+            while (sum &gt;= s) {
+                subLength = (j - i + 1); // 取子序列的长度
                 result = result &lt; subLength ? result : subLength;
-                sum -= nums[i++]; <span class="pl-c"><span class="pl-c">//</span> 这里体现出滑动窗口的精髓之处，不断变更i（子序列的起始位置）</span>
+                sum -= nums[i++]; // 这里体现出滑动窗口的精髓之处，不断变更i（子序列的起始位置）
             }
         }
-        <span class="pl-c"><span class="pl-c">//</span> 如果result没有被赋值的话，就返回0，说明没有符合条件的子序列</span>
-        <span class="pl-k">return</span> result == INT32_MAX ? <span class="pl-c1">0</span> : result;
+        // 如果result没有被赋值的话，就返回0，说明没有符合条件的子序列
+        return result == INT32_MAX ? 0 : result;
     }
 };</pre></div>
 <p><strong>易错点：</strong></p>
@@ -208,51 +208,51 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>2.当输入n返回一个n*n的矩阵，需要转n/2圈，其中如果n为偶数，则需要我们手动将最后一个值赋值到中间</p>
 <p>3.如何控制每一圈的终止位置（offset）<br>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/7570f4c5-3a0f-45a1-b507-d13a2c7d4deb"><img width="731" alt="20220922102236" src="https://github.com/nanshanvv/nanshanvv.github.io/assets/77189526/7570f4c5-3a0f-45a1-b507-d13a2c7d4deb" style="max-width: 100%;"></a></p>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
-    vector&lt;vector&lt;<span class="pl-k">int</span>&gt;&gt; <span class="pl-en">generateMatrix</span>(<span class="pl-k">int</span> n) {
-        vector&lt;vector&lt;<span class="pl-k">int</span>&gt;&gt; <span class="pl-c1">res</span>(n, vector&lt;<span class="pl-k">int</span>&gt;(n, <span class="pl-c1">0</span>)); <span class="pl-c"><span class="pl-c">//</span> 使用vector定义一个二维数组</span>
-        <span class="pl-k">int</span> startx = <span class="pl-c1">0</span>, starty = <span class="pl-c1">0</span>; <span class="pl-c"><span class="pl-c">//</span> 定义每循环一个圈的起始位置</span>
-        <span class="pl-k">int</span> loop = n / <span class="pl-c1">2</span>; <span class="pl-c"><span class="pl-c">//</span> 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理</span>
-        <span class="pl-k">int</span> mid = n / <span class="pl-c1">2</span>; <span class="pl-c"><span class="pl-c">//</span> 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)</span>
-        <span class="pl-k">int</span> count = <span class="pl-c1">1</span>; <span class="pl-c"><span class="pl-c">//</span> 用来给矩阵中每一个空格赋值</span>
-        <span class="pl-k">int</span> offset = <span class="pl-c1">1</span>; <span class="pl-c"><span class="pl-c">//</span> 需要控制每一条边遍历的长度，每次循环右边界收缩一位</span>
-        <span class="pl-k">int</span> i,j;
-        <span class="pl-k">while</span> (loop --) {
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
+    vector&lt;vector&lt;int&gt;&gt; <span class="pl-en">generateMatrix</span>(int n) {
+        vector&lt;vector&lt;int&gt;&gt; res(n, <span class="pl-en">vector</span>&lt;int&gt;(n, 0)); // 使用vector定义一个二维数组
+        int startx = 0, starty = 0; // 定义每循环一个圈的起始位置
+        int loop = n / 2; // 每个圈循环几次，例如n为奇数3，那么loop = 1 只是循环一圈，矩阵中间的值需要单独处理
+        int mid = n / 2; // 矩阵中间的位置，例如：n为3， 中间的位置就是(1，1)，n为5，中间位置为(2, 2)
+        int count = 1; // 用来给矩阵中每一个空格赋值
+        int offset = 1; // 需要控制每一条边遍历的长度，每次循环右边界收缩一位
+        int i,j;
+        while (loop --) {
             i = startx;
             j = starty;
 
-            <span class="pl-c"><span class="pl-c">//</span> 下面开始的四个for就是模拟转了一圈</span>
-            <span class="pl-c"><span class="pl-c">//</span> 模拟填充上行从左到右(左闭右开)</span>
-            <span class="pl-k">for</span> (j; j &lt; n - offset; j++) {
+            // 下面开始的四个for就是模拟转了一圈
+            // 模拟填充上行从左到右(左闭右开)
+            for (j; j &lt; n - offset; j++) {
                 res[i][j] = count++;
             }
-            <span class="pl-c"><span class="pl-c">//</span> 模拟填充右列从上到下(左闭右开)</span>
-            <span class="pl-k">for</span> (i; i &lt; n - offset; i++) {
+            // 模拟填充右列从上到下(左闭右开)
+            for (i; i &lt; n - offset; i++) {
                 res[i][j] = count++;
             }
-            <span class="pl-c"><span class="pl-c">//</span> 模拟填充下行从右到左(左闭右开)</span>
-            <span class="pl-k">for</span> (; j &gt; starty; j--) {
+            // 模拟填充下行从右到左(左闭右开)
+            for (; j &gt; starty; j--) {
                 res[i][j] = count++;
             }
-            <span class="pl-c"><span class="pl-c">//</span> 模拟填充左列从下到上(左闭右开)</span>
-            <span class="pl-k">for</span> (; i &gt; startx; i--) {
+            // 模拟填充左列从下到上(左闭右开)
+            for (; i &gt; startx; i--) {
                 res[i][j] = count++;
             }
 
-            <span class="pl-c"><span class="pl-c">//</span> 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)</span>
+            // 第二圈开始的时候，起始位置要各自加1， 例如：第一圈起始位置是(0, 0)，第二圈起始位置是(1, 1)
             startx++;
             starty++;
 
-            <span class="pl-c"><span class="pl-c">//</span> offset 控制每一圈里每一条边遍历的长度</span>
-            offset += <span class="pl-c1">1</span>;
+            // offset 控制每一圈里每一条边遍历的长度
+            offset += 1;
         }
 
-        <span class="pl-c"><span class="pl-c">//</span> 如果n为奇数的话，需要单独给矩阵最中间的位置赋值</span>
-        <span class="pl-k">if</span> (n % <span class="pl-c1">2</span>) {
+        // 如果n为奇数的话，需要单独给矩阵最中间的位置赋值
+        if (n % 2) {
             res[mid][mid] = count;
         }
-        <span class="pl-k">return</span> res;
+        return res;
     }
 };</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>

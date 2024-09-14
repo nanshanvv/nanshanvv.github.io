@@ -92,42 +92,42 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div class="highlight highlight-text-html-basic"><pre class="notranslate">输入：head = [1,2,3,4,5]
 输出：[5,4,3,2,1]</pre></div>
 <h3>题解：双指针法</h3>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
     ListNode* <span class="pl-en">reverseList</span>(ListNode* head) {
-        ListNode* temp; <span class="pl-c"><span class="pl-c">//</span> 保存cur的下一个节点</span>
+        ListNode* temp; // 保存cur的下一个节点
         ListNode* cur = head;
-        ListNode* pre = <span class="pl-c1">NULL</span>;
-        <span class="pl-k">while</span>(cur) {
-            temp = cur-&gt;<span class="pl-smi">next</span>;  <span class="pl-c"><span class="pl-c">//</span> 保存一下 cur的下一个节点，因为接下来要改变cur-&gt;next</span>
-            cur-&gt;<span class="pl-smi">next</span> = pre; <span class="pl-c"><span class="pl-c">//</span> 翻转操作</span>
-            <span class="pl-c"><span class="pl-c">//</span> 更新pre 和 cur指针</span>
+        ListNode* pre = NULL;
+        while(cur) {
+            temp = cur-&gt;next;  // 保存一下 cur的下一个节点，因为接下来要改变cur-&gt;next
+            cur-&gt;next = pre; // 翻转操作
+            // 更新pre 和 cur指针
             pre = cur;
             cur = temp;
         }
-        <span class="pl-k">return</span> pre;
+        return pre;
     }
 };</pre></div>
 <p><strong>注意点：</strong></p>
 <p>1.注意循环的条件为cur！第一次写的时候我写成了cur-&gt;next  != nullptr，最后陷入死循环</p>
 <p>2.记得返回的是新的头结点pre</p>
 <h3>题解二：递归法</h3>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
     ListNode* <span class="pl-en">reverse</span>(ListNode* pre,ListNode* cur){
-        <span class="pl-k">if</span>(cur == <span class="pl-c1">NULL</span>) <span class="pl-k">return</span> pre;
-        ListNode* temp = cur-&gt;<span class="pl-smi">next</span>;
-        cur-&gt;<span class="pl-smi">next</span> = pre;
-        <span class="pl-c"><span class="pl-c">//</span> 可以和双指针法的代码进行对比，如下递归的写法，其实就是做了这两步</span>
-        <span class="pl-c"><span class="pl-c">//</span> pre = cur;</span>
-        <span class="pl-c"><span class="pl-c">//</span> cur = temp;</span>
-        <span class="pl-k">return</span> <span class="pl-c1">reverse</span>(cur,temp);
+        if(cur == NULL) return pre;
+        ListNode* temp = cur-&gt;next;
+        cur-&gt;next = pre;
+        // 可以和双指针法的代码进行对比，如下递归的写法，其实就是做了这两步
+        // pre = cur;
+        // cur = temp;
+        return reverse(cur,temp);
     }
     ListNode* <span class="pl-en">reverseList</span>(ListNode* head) {
-        <span class="pl-c"><span class="pl-c">//</span> 和双指针法初始化是一样的逻辑</span>
-        <span class="pl-c"><span class="pl-c">//</span> ListNode* cur = head;</span>
-        <span class="pl-c"><span class="pl-c">//</span> ListNode* pre = NULL;</span>
-        <span class="pl-k">return</span> <span class="pl-c1">reverse</span>(<span class="pl-c1">NULL</span>, head);
+        // 和双指针法初始化是一样的逻辑
+        // ListNode* cur = head;
+        // ListNode* pre = NULL;
+        return reverse(NULL, head);
     }
 
 };</pre></div>
@@ -135,25 +135,25 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>[<a href="https://leetcode.cn/problems/swap-nodes-in-pairs/description/" rel="nofollow">题目</a>](<a href="https://leetcode.cn/problems/swap-nodes-in-pairs/description/)%EF%BC%9A%E7%BB%99%E4%BD%A0%E4%B8%80%E4%B8%AA%E9%93%BE%E8%A1%A8%EF%BC%8C%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E5%85%B6%E4%B8%AD%E7%9B%B8%E9%82%BB%E7%9A%84%E8%8A%82%E7%82%B9%EF%BC%8C%E5%B9%B6%E8%BF%94%E5%9B%9E%E4%BA%A4%E6%8D%A2%E5%90%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E5%A4%B4%E8%8A%82%E7%82%B9%E3%80%82%E4%BD%A0%E5%BF%85%E9%A1%BB%E5%9C%A8%E4%B8%8D%E4%BF%AE%E6%94%B9%E8%8A%82%E7%82%B9%E5%86%85%E9%83%A8%E7%9A%84%E5%80%BC%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%AE%8C%E6%88%90%E6%9C%AC%E9%A2%98%EF%BC%88%E5%8D%B3%EF%BC%8C%E5%8F%AA%E8%83%BD%E8%BF%9B%E8%A1%8C%E8%8A%82%E7%82%B9%E4%BA%A4%E6%8D%A2%EF%BC%89%E3%80%82" rel="nofollow">https://leetcode.cn/problems/swap-nodes-in-pairs/description/)：给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。</a></p>
 <h3>题解：看图说话</h3>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/728b84d1-2f4e-4f4e-a33c-08efa022d378"><img src="https://github.com/user-attachments/assets/728b84d1-2f4e-4f4e-a33c-08efa022d378" alt="24 两两交换链表中的节点2" style="max-width: 100%;"></a></p>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
     ListNode* <span class="pl-en">swapPairs</span>(ListNode* head) {
-        ListNode* dummyHead = <span class="pl-k">new</span> <span class="pl-c1">ListNode</span>(<span class="pl-c1">0</span>); <span class="pl-c"><span class="pl-c">//</span> 设置一个虚拟头结点</span>
-        dummyHead-&gt;<span class="pl-smi">next</span> = head; <span class="pl-c"><span class="pl-c">//</span> 将虚拟头结点指向head，这样方便后面做删除操作</span>
+        ListNode* dummyHead = <span class="pl-k">new</span> ListNode(0); // 设置一个虚拟头结点
+        dummyHead-&gt;next = head; // 将虚拟头结点指向head，这样方便后面做删除操作
         ListNode* cur = dummyHead;
-        <span class="pl-k">while</span>(cur-&gt;<span class="pl-smi">next</span> != <span class="pl-c1">nullptr</span> &amp;&amp; cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span> != <span class="pl-c1">nullptr</span>) {
-            ListNode* tmp = cur-&gt;<span class="pl-smi">next</span>; <span class="pl-c"><span class="pl-c">//</span> 记录临时节点</span>
-            ListNode* tmp1 = cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>; <span class="pl-c"><span class="pl-c">//</span> 记录临时节点</span>
+        while(cur-&gt;next != <span class="pl-c1">nullptr</span> &amp;&amp; cur-&gt;next-&gt;next != <span class="pl-c1">nullptr</span>) {
+            ListNode* tmp = cur-&gt;next; // 记录临时节点
+            ListNode* tmp1 = cur-&gt;next-&gt;next-&gt;next; // 记录临时节点
 
-            cur-&gt;<span class="pl-smi">next</span> = cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>;    <span class="pl-c"><span class="pl-c">//</span> 步骤一</span>
-            cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span> = tmp;          <span class="pl-c"><span class="pl-c">//</span> 步骤二</span>
-            cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span> = tmp1;   <span class="pl-c"><span class="pl-c">//</span> 步骤三</span>
+            cur-&gt;next = cur-&gt;next-&gt;next;    // 步骤一
+            cur-&gt;next-&gt;next = tmp;          // 步骤二
+            cur-&gt;next-&gt;next-&gt;next = tmp1;   // 步骤三
 
-            cur = cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>; <span class="pl-c"><span class="pl-c">//</span> cur移动两位，准备下一轮交换</span>
+            cur = cur-&gt;next-&gt;next; // cur移动两位，准备下一轮交换
         }
-        ListNode* result = dummyHead-&gt;<span class="pl-smi">next</span>;
+        ListNode* result = dummyHead-&gt;next;
         <span class="pl-k">delete</span> dummyHead;
-        <span class="pl-k">return</span> result;
+        return result;
     }
 };</pre></div>
 <p><strong>难点与易错点：</strong></p>
@@ -166,28 +166,28 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>双指针法流程图：[<a href="https://www.programmercarl.com/0019.%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E8%8A%82%E7%82%B9.html#%E7%AE%97%E6%B3%95%E5%85%AC%E5%BC%80%E8%AF%BE" rel="nofollow">见网页</a>](<a href="https://www.programmercarl.com/0019.%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E8%8A%82%E7%82%B9.html#%E7%AE%97%E6%B3%95%E5%85%AC%E5%BC%80%E8%AF%BE" rel="nofollow">https://www.programmercarl.com/0019.%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E8%8A%82%E7%82%B9.html#%E7%AE%97%E6%B3%95%E5%85%AC%E5%BC%80%E8%AF%BE</a>)</p>
 <p><strong>大致流程：fast指针先走n+1步，这个时候slow与fast永远相隔n+1，那么fast与slow同时向后移动，当fast到达nullptr，说明slow到达倒数n+1的位置（要删除的节点的前一个节点）</strong></p>
 <h3>题解：双指针法</h3>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
-    ListNode* <span class="pl-en">removeNthFromEnd</span>(ListNode* head, <span class="pl-k">int</span> n) {
-        ListNode* dummyHead = <span class="pl-k">new</span> <span class="pl-c1">ListNode</span>(<span class="pl-c1">0</span>);
-        dummyHead-&gt;<span class="pl-smi">next</span> = head;
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
+    ListNode* <span class="pl-en">removeNthFromEnd</span>(ListNode* head, int n) {
+        ListNode* dummyHead = <span class="pl-k">new</span> ListNode(0);
+        dummyHead-&gt;next = head;
         ListNode* slow = dummyHead;
         ListNode* fast = dummyHead;
-        <span class="pl-k">while</span>(n-- &amp;&amp; fast != <span class="pl-c1">NULL</span>) {
-            fast = fast-&gt;<span class="pl-smi">next</span>;
+        while(n-- &amp;&amp; fast != NULL) {
+            fast = fast-&gt;next;
         }
-        fast = fast-&gt;<span class="pl-smi">next</span>; <span class="pl-c"><span class="pl-c">//</span> fast再提前走一步，因为需要让slow指向删除节点的上一个节点</span>
-        <span class="pl-k">while</span> (fast != <span class="pl-c1">NULL</span>) {
-            fast = fast-&gt;<span class="pl-smi">next</span>;
-            slow = slow-&gt;<span class="pl-smi">next</span>;
+        fast = fast-&gt;next; // fast再提前走一步，因为需要让slow指向删除节点的上一个节点
+        while (fast != NULL) {
+            fast = fast-&gt;next;
+            slow = slow-&gt;next;
         }
-        slow-&gt;<span class="pl-smi">next</span> = slow-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>; 
+        slow-&gt;next = slow-&gt;next-&gt;next; 
         
-        <span class="pl-c"><span class="pl-c">//</span> ListNode *tmp = slow-&gt;next;  C++释放内存的逻辑</span>
-        <span class="pl-c"><span class="pl-c">//</span> slow-&gt;next = tmp-&gt;next;</span>
-        <span class="pl-c"><span class="pl-c">//</span> delete tmp;</span>
+        // ListNode *tmp = slow-&gt;next;  C++释放内存的逻辑
+        // slow-&gt;next = tmp-&gt;next;
+        // delete tmp;
         
-        <span class="pl-k">return</span> dummyHead-&gt;<span class="pl-smi">next</span>;
+        return dummyHead-&gt;next;
     }
 };</pre></div>
 <p><strong>易错点：用虚拟头节点后一定要返回的是dummyHead-&gt;next而不是直接删除dummyHead返回head</strong></p>
@@ -235,34 +235,34 @@ $$<br>
 <p>动画如下：</p>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/0975e1e3-41cc-402d-9a28-cc9b1615767b"><img src="https://github.com/user-attachments/assets/0975e1e3-41cc-402d-9a28-cc9b1615767b" alt="142 环形链表II（求入口）" style="max-width: 100%;"></a></p>
 <h4>题解：快慢指针法</h4>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-c"><span class="pl-c">/*</span>*</span>
-<span class="pl-c"> * Definition for singly-linked list.</span>
-<span class="pl-c"> * struct ListNode {</span>
-<span class="pl-c"> *     int val;</span>
-<span class="pl-c"> *     ListNode *next;</span>
-<span class="pl-c"> *     ListNode(int x) : val(x), next(NULL) {}</span>
-<span class="pl-c"> * };</span>
-<span class="pl-c"> <span class="pl-c">*/</span></span>
-<span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+<span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
     ListNode *<span class="pl-en">detectCycle</span>(ListNode *head) {
         ListNode* fast = head;
         ListNode* slow = head;
-        <span class="pl-k">while</span>(fast != <span class="pl-c1">NULL</span> &amp;&amp; fast-&gt;<span class="pl-smi">next</span> != <span class="pl-c1">NULL</span>) {
-            slow = slow-&gt;<span class="pl-smi">next</span>;
-            fast = fast-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>;
-            <span class="pl-c"><span class="pl-c">//</span> 快慢指针相遇，此时从head 和 相遇点，同时查找直至相遇</span>
-            <span class="pl-k">if</span> (slow == fast) {
+        while(fast != NULL &amp;&amp; fast-&gt;next != NULL) {
+            slow = slow-&gt;next;
+            fast = fast-&gt;next-&gt;next;
+            // 快慢指针相遇，此时从head 和 相遇点，同时查找直至相遇
+            if (slow == fast) {
                 ListNode* index1 = fast;
                 ListNode* index2 = head;
-                <span class="pl-k">while</span> (index1 != index2) {
-                    index1 = index1-&gt;<span class="pl-smi">next</span>;
-                    index2 = index2-&gt;<span class="pl-smi">next</span>;
+                while (index1 != index2) {
+                    index1 = index1-&gt;next;
+                    index2 = index2-&gt;next;
                 }
-                <span class="pl-k">return</span> index2; <span class="pl-c"><span class="pl-c">//</span> 返回环的入口</span>
+                return index2; // 返回环的入口
             }
         }
-        <span class="pl-k">return</span> <span class="pl-c1">NULL</span>;
+        return NULL;
     }
 };</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>

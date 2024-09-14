@@ -113,11 +113,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <div id="content">
 <div class="markdown-body" id="postBody"><h1>链表基础</h1>
 <h2>链表节点的构造</h2>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-c"><span class="pl-c">//</span> 单链表</span>
-<span class="pl-k">struct</span> <span class="pl-en">ListNode</span> {
-    <span class="pl-k">int</span> val;  <span class="pl-c"><span class="pl-c">//</span> 节点上存储的元素</span>
-    ListNode *next;  <span class="pl-c"><span class="pl-c">//</span> 指向下一个节点的指针</span>
-    #ListNode(<span class="pl-k">int</span> x) : val(x), next(<span class="pl-c1">NULL</span>) {}  <span class="pl-c"><span class="pl-c">//</span> 节点的构造函数，不加也行因为cpp默认生成一个构造函数</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate">// 单链表
+struct ListNode {
+    int val;  // 节点上存储的元素
+    ListNode *next;  // 指向下一个节点的指针
+    #ListNode(int x) : val(x), next(NULL) {}  // 节点的构造函数，不加也行因为cpp默认生成一个构造函数
 };</pre></div>
 <ul>
 <li><strong>构造函数</strong>:
@@ -129,60 +129,60 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </li>
 </ul>
 <p>这个构造函数简化了节点创建的过程，使得在创建节点时可以直接指定节点的值，并默认将 <code class="notranslate">next</code> 设置为 NULL。</p>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-c"><span class="pl-c">//</span>通过自己的构造函数初始化节点</span>
-ListNode* head = <span class="pl-k">new</span> ListNode(<span class="pl-c1">5</span>);</pre></div>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-c"><span class="pl-c">//</span>用默认的构造函数来初始化节点</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate">//通过自己的构造函数初始化节点
+ListNode* head = <span class="pl-k">new</span> ListNode(5);</pre></div>
+<div class="highlight highlight-source-c++"><pre class="notranslate">//用默认的构造函数来初始化节点
 ListNode* head = <span class="pl-k">new</span> ListNode();
-head-&gt;val = <span class="pl-c1">5</span>;</pre></div>
+head-&gt;val = 5;</pre></div>
 <p>注意：如果不定义构造函数而是用默认的构造函数的话，<strong>初始化的时候不能直接给变量赋值。</strong></p>
 <h2>链表的操作</h2>
 <h4>删除节点</h4>
 <h5>[<a href="https://leetcode.cn/problems/remove-linked-list-elements/description/" rel="nofollow">题目</a>](<a href="https://leetcode.cn/problems/remove-linked-list-elements/description/)%EF%BC%9A" rel="nofollow">https://leetcode.cn/problems/remove-linked-list-elements/description/)：</a></h5>
 <p>给你一个链表的头节点 <code class="notranslate">head</code> 和一个整数 <code class="notranslate">val</code> ，请你删除链表中所有满足 <code class="notranslate">Node.val == val</code> 的节点，并返回 <strong>新的头节点</strong> 。</p>
 <h5>方法一：直接操作</h5>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
-    ListNode* <span class="pl-en">removeElements</span>(ListNode* head, <span class="pl-k">int</span> val) {
-        <span class="pl-c"><span class="pl-c">//</span> 删除头结点</span>
-        <span class="pl-k">while</span> (head != <span class="pl-c1">NULL</span> &amp;&amp; head-&gt;<span class="pl-smi">val</span> == val) { <span class="pl-c"><span class="pl-c">//</span> 注意这里不是if（直到删到头节点不是val值）</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
+    ListNode* <span class="pl-en">removeElements</span>(ListNode* head, int val) {
+        // 删除头结点
+        while (head != NULL &amp;&amp; head-&gt;val == val) { // 注意这里不是if（直到删到头节点不是val值）
             ListNode* tmp = head;
-            head = head-&gt;<span class="pl-smi">next</span>;
+            head = head-&gt;next;
             <span class="pl-k">delete</span> tmp;
         }
 
-        <span class="pl-c"><span class="pl-c">//</span> 删除非头结点</span>
+        // 删除非头结点
         ListNode* cur = head;
-        <span class="pl-k">while</span> (cur != <span class="pl-c1">NULL</span> &amp;&amp; cur-&gt;<span class="pl-smi">next</span>!= <span class="pl-c1">NULL</span>) {
-            <span class="pl-k">if</span> (cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">val</span> == val) {<span class="pl-c"><span class="pl-c">//</span>注意，判断的是cur下一个节点的val是否与给定val相同，所以while的循环条件为cur != NULL &amp;&amp; cur-&gt;next!= NULL</span>
-                ListNode* tmp = cur-&gt;<span class="pl-smi">next</span>;
-                cur-&gt;<span class="pl-smi">next</span> = cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>;
+        while (cur != NULL &amp;&amp; cur-&gt;next!= NULL) {
+            if (cur-&gt;next-&gt;val == val) {//注意，判断的是cur下一个节点的val是否与给定val相同，所以while的循环条件为cur != NULL &amp;&amp; cur-&gt;next!= NULL
+                ListNode* tmp = cur-&gt;next;
+                cur-&gt;next = cur-&gt;next-&gt;next;
                 <span class="pl-k">delete</span> tmp;
-            } <span class="pl-k">else</span> {
-                cur = cur-&gt;<span class="pl-smi">next</span>;
+            } else {
+                cur = cur-&gt;next;
             }
         }
-        <span class="pl-k">return</span> head;
+        return head;
     }
 };</pre></div>
 <h5>方法二：虚拟头节点</h5>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
-<span class="pl-k">public:</span>
-    ListNode* <span class="pl-en">removeElements</span>(ListNode* head, <span class="pl-k">int</span> val) {
-        ListNode* dummyHead = <span class="pl-k">new</span> <span class="pl-c1">ListNode</span>(<span class="pl-c1">0</span>); <span class="pl-c"><span class="pl-c">//</span> 设置一个虚拟头结点</span>
-        dummyHead-&gt;<span class="pl-smi">next</span> = head; <span class="pl-c"><span class="pl-c">//</span> 将虚拟头结点指向head，这样方便后面做删除操作</span>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> Solution {
+<span class="pl-k">public</span>:
+    ListNode* <span class="pl-en">removeElements</span>(ListNode* head, int val) {
+        ListNode* dummyHead = <span class="pl-k">new</span> ListNode(0); // 设置一个虚拟头结点
+        dummyHead-&gt;next = head; // 将虚拟头结点指向head，这样方便后面做删除操作
         ListNode* cur = dummyHead;
-        <span class="pl-k">while</span> (cur-&gt;<span class="pl-smi">next</span> != <span class="pl-c1">NULL</span>) {
-            <span class="pl-k">if</span>(cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">val</span> == val) {
-                ListNode* tmp = cur-&gt;<span class="pl-smi">next</span>;
-                cur-&gt;<span class="pl-smi">next</span> = cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>;
+        while (cur-&gt;next != NULL) {
+            if(cur-&gt;next-&gt;val == val) {
+                ListNode* tmp = cur-&gt;next;
+                cur-&gt;next = cur-&gt;next-&gt;next;
                 <span class="pl-k">delete</span> tmp;
-            } <span class="pl-k">else</span> {
-                cur = cur-&gt;<span class="pl-smi">next</span>;
+            } else {
+                cur = cur-&gt;next;
             }
         }
-        head = dummyHead-&gt;<span class="pl-smi">next</span>;<span class="pl-c"><span class="pl-c">//</span>重点！真正的head是虚拟head的下一个节点，所以要记得删除dummyHead</span>
+        head = dummyHead-&gt;next;//重点！真正的head是虚拟head的下一个节点，所以要记得删除dummyHead
         <span class="pl-k">delete</span> dummyHead;
-        <span class="pl-k">return</span> head;
+        return head;
     }
 };</pre></div>
 <h4>设计链表</h4>
@@ -195,101 +195,101 @@ head-&gt;val = <span class="pl-c1">5</span>;</pre></div>
 <li>addAtIndex(index,val)：在链表中的第 index 个节点之前添加值为 val 的节点。如果 index 等于链表的长度，则该节点将附加到链表的末尾。如果 index 大于链表长度，则不会插入节点。如果index小于0，则在头部插入节点。</li>
 <li>deleteAtIndex(index)：如果索引 index 有效，则删除链表中的第 index 个节点。</li>
 </ul>
-<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">MyLinkedList</span> {
-<span class="pl-k">public:</span>
-    <span class="pl-c"><span class="pl-c">//</span> 定义链表节点结构体</span>
-    <span class="pl-k">struct</span> <span class="pl-en">LinkedNode</span> {
-        <span class="pl-k">int</span> val;
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> MyLinkedList {
+<span class="pl-k">public</span>:
+    // 定义链表节点结构体
+    struct LinkedNode {
+        int val;
         LinkedNode* next;
-        <span class="pl-en">LinkedNode</span>(<span class="pl-k">int</span> val):val(val), next(<span class="pl-c1">nullptr</span>){}
+        LinkedNode(int val):val(val), next(<span class="pl-c1">nullptr</span>){}
     };
 
-    <span class="pl-c"><span class="pl-c">//</span> 初始化链表</span>
-    <span class="pl-en">MyLinkedList</span>() {
-        _dummyHead = <span class="pl-k">new</span> <span class="pl-c1">LinkedNode</span>(<span class="pl-c1">0</span>); <span class="pl-c"><span class="pl-c">//</span> 这里定义的头结点 是一个虚拟头结点，而不是真正的链表头结点</span>
-        _size = <span class="pl-c1">0</span>;
+    // 初始化链表
+    MyLinkedList() {
+        _dummyHead = <span class="pl-k">new</span> LinkedNode(0); // 这里定义的头结点 是一个虚拟头结点，而不是真正的链表头结点
+        _size = 0;
     }
 
-    <span class="pl-c"><span class="pl-c">//</span> 获取到第index个节点数值，如果index是非法数值直接返回-1， 注意index是从0开始的，第0个节点就是头结点</span>
-    <span class="pl-k">int</span> <span class="pl-en">get</span>(<span class="pl-k">int</span> index) {
-        <span class="pl-k">if</span> (<span class="pl-c1">index</span> &gt; (_size - <span class="pl-c1">1</span>) || <span class="pl-c1">index</span> &lt; <span class="pl-c1">0</span>) {
-            <span class="pl-k">return</span> -<span class="pl-c1">1</span>;
+    // 获取到第index个节点数值，如果index是非法数值直接返回-1， 注意index是从0开始的，第0个节点就是头结点
+    int <span class="pl-en">get</span>(int index) {
+        if (index &gt; (_size - 1) || index &lt; 0) {
+            return -1;
         }
-        LinkedNode* cur = _dummyHead-&gt;<span class="pl-smi">next</span>;
-        <span class="pl-k">while</span>(<span class="pl-c1">index</span>--){ <span class="pl-c"><span class="pl-c">//</span> 如果--index 就会陷入死循环</span>
-            cur = cur-&gt;<span class="pl-smi">next</span>;
+        LinkedNode* cur = _dummyHead-&gt;next;
+        while(index--){ // 如果--index 就会陷入死循环
+            cur = cur-&gt;next;
         }
-        <span class="pl-k">return</span> cur-&gt;<span class="pl-smi">val</span>;
+        return cur-&gt;val;
     }
 
-    <span class="pl-c"><span class="pl-c">//</span> 在链表最前面插入一个节点，插入完成后，新插入的节点为链表的新的头结点</span>
-    <span class="pl-k">void</span> <span class="pl-en">addAtHead</span>(<span class="pl-k">int</span> val) {
-        LinkedNode* newNode = <span class="pl-k">new</span> <span class="pl-c1">LinkedNode</span>(val);
-        newNode-&gt;<span class="pl-smi">next</span> = _dummyHead-&gt;<span class="pl-smi">next</span>;
-        _dummyHead-&gt;<span class="pl-smi">next</span> = newNode;
+    // 在链表最前面插入一个节点，插入完成后，新插入的节点为链表的新的头结点
+    void <span class="pl-en">addAtHead</span>(int val) {
+        LinkedNode* newNode = <span class="pl-k">new</span> LinkedNode(val);
+        newNode-&gt;next = _dummyHead-&gt;next;
+        _dummyHead-&gt;next = newNode;
         _size++;
     }
 
-    <span class="pl-c"><span class="pl-c">//</span> 在链表最后面添加一个节点</span>
-    <span class="pl-k">void</span> <span class="pl-en">addAtTail</span>(<span class="pl-k">int</span> val) {
-        LinkedNode* newNode = <span class="pl-k">new</span> <span class="pl-c1">LinkedNode</span>(val);
+    // 在链表最后面添加一个节点
+    void <span class="pl-en">addAtTail</span>(int val) {
+        LinkedNode* newNode = <span class="pl-k">new</span> LinkedNode(val);
         LinkedNode* cur = _dummyHead;
-        <span class="pl-k">while</span>(cur-&gt;<span class="pl-smi">next</span> != <span class="pl-c1">nullptr</span>){
-            cur = cur-&gt;<span class="pl-smi">next</span>;
+        while(cur-&gt;next != <span class="pl-c1">nullptr</span>){
+            cur = cur-&gt;next;
         }
-        cur-&gt;<span class="pl-smi">next</span> = newNode;
+        cur-&gt;next = newNode;
         _size++;
     }
 
-    <span class="pl-c"><span class="pl-c">//</span> 在第index个节点之前插入一个新节点，例如index为0，那么新插入的节点为链表的新头节点。</span>
-    <span class="pl-c"><span class="pl-c">//</span> 如果index 等于链表的长度，则说明是新插入的节点为链表的尾结点</span>
-    <span class="pl-c"><span class="pl-c">//</span> 如果index大于链表的长度，则返回空</span>
-    <span class="pl-c"><span class="pl-c">//</span> 如果index小于0，则在头部插入节点</span>
-    <span class="pl-k">void</span> <span class="pl-en">addAtIndex</span>(<span class="pl-k">int</span> index, <span class="pl-k">int</span> val) {
+    // 在第index个节点之前插入一个新节点，例如index为0，那么新插入的节点为链表的新头节点。
+    // 如果index 等于链表的长度，则说明是新插入的节点为链表的尾结点
+    // 如果index大于链表的长度，则返回空
+    // 如果index小于0，则在头部插入节点
+    void <span class="pl-en">addAtIndex</span>(int index, int val) {
 
-        <span class="pl-k">if</span>(<span class="pl-c1">index</span> &gt; _size) <span class="pl-k">return</span>;
-        <span class="pl-k">if</span>(<span class="pl-c1">index</span> &lt; <span class="pl-c1">0</span>) <span class="pl-c1">index</span> = <span class="pl-c1">0</span>;        
-        LinkedNode* newNode = <span class="pl-k">new</span> <span class="pl-c1">LinkedNode</span>(val);
+        if(index &gt; _size) return;
+        if(index &lt; 0) index = 0;        
+        LinkedNode* newNode = <span class="pl-k">new</span> LinkedNode(val);
         LinkedNode* cur = _dummyHead;
-        <span class="pl-k">while</span>(<span class="pl-c1">index</span>--) {
-            cur = cur-&gt;<span class="pl-smi">next</span>;
+        while(index--) {
+            cur = cur-&gt;next;
         }
-        newNode-&gt;<span class="pl-smi">next</span> = cur-&gt;<span class="pl-smi">next</span>;
-        cur-&gt;<span class="pl-smi">next</span> = newNode;
+        newNode-&gt;next = cur-&gt;next;
+        cur-&gt;next = newNode;
         _size++;
     }
 
-    <span class="pl-c"><span class="pl-c">//</span> 删除第index个节点，如果index 大于等于链表的长度，直接return，注意index是从0开始的</span>
-    <span class="pl-k">void</span> <span class="pl-en">deleteAtIndex</span>(<span class="pl-k">int</span> index) {
-        <span class="pl-k">if</span> (<span class="pl-c1">index</span> &gt;= _size || <span class="pl-c1">index</span> &lt; <span class="pl-c1">0</span>) {
-            <span class="pl-k">return</span>;
+    // 删除第index个节点，如果index 大于等于链表的长度，直接return，注意index是从0开始的
+    void <span class="pl-en">deleteAtIndex</span>(int index) {
+        if (index &gt;= _size || index &lt; 0) {
+            return;
         }
         LinkedNode* cur = _dummyHead;
-        <span class="pl-k">while</span>(<span class="pl-c1">index</span>--) {
-            cur = cur -&gt;<span class="pl-smi">next</span>;
+        while(index--) {
+            cur = cur -&gt;next;
         }
-        LinkedNode* tmp = cur-&gt;<span class="pl-smi">next</span>;
-        cur-&gt;<span class="pl-smi">next</span> = cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">next</span>;
+        LinkedNode* tmp = cur-&gt;next;
+        cur-&gt;next = cur-&gt;next-&gt;next;
         <span class="pl-k">delete</span> tmp;
-        <span class="pl-c"><span class="pl-c">//</span>delete命令指示释放了tmp指针原本所指的那部分内存，</span>
-        <span class="pl-c"><span class="pl-c">//</span>被delete后的指针tmp的值（地址）并非就是NULL，而是随机值。也就是被delete后，</span>
-        <span class="pl-c"><span class="pl-c">//</span>如果不再加上一句tmp=nullptr,tmp会成为乱指的野指针</span>
-        <span class="pl-c"><span class="pl-c">//</span>如果之后的程序不小心使用了tmp，会指向难以预想的内存空间</span>
+        //delete命令指示释放了tmp指针原本所指的那部分内存，
+        //被delete后的指针tmp的值（地址）并非就是NULL，而是随机值。也就是被delete后，
+        //如果不再加上一句tmp=nullptr,tmp会成为乱指的野指针
+        //如果之后的程序不小心使用了tmp，会指向难以预想的内存空间
         tmp=<span class="pl-c1">nullptr</span>;
         _size--;
     }
 
-    <span class="pl-c"><span class="pl-c">//</span> 打印链表</span>
-    <span class="pl-k">void</span> <span class="pl-en">printLinkedList</span>() {
+    // 打印链表
+    void <span class="pl-en">printLinkedList</span>() {
         LinkedNode* cur = _dummyHead;
-        <span class="pl-k">while</span> (cur-&gt;<span class="pl-smi">next</span> != <span class="pl-c1">nullptr</span>) {
-            cout &lt;&lt; cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">val</span> &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>;
-            cur = cur-&gt;<span class="pl-smi">next</span>;
+        while (cur-&gt;next != <span class="pl-c1">nullptr</span>) {
+            cout &lt;&lt; cur-&gt;next-&gt;val &lt;&lt; " ";
+            cur = cur-&gt;next;
         }
         cout &lt;&lt; endl;
     }
-<span class="pl-k">private:</span>
-    <span class="pl-k">int</span> _size;
+<span class="pl-k">private</span>:
+    int _size;
     LinkedNode* _dummyHead;
 
 };</pre></div>
